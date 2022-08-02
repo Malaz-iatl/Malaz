@@ -30,9 +30,9 @@
                                 <td  t-if= "not state" style=" border: 1px solid black;text-align: center;" width="20%" class="text-center">State</td>
                             </tr>
                             <t t-set="count" t-value="1"/>
-                            <tr t-foreach="docs" t-as="doc" style="border: 1px solid black;">
+                            <tr t-foreach="ticket_list" t-as="doc" style="border: 1px solid black;">
                                 <td style="border-left: 1px solid black;" class="text-center">
-                                    <span t-t-esc ="count"/>
+                                    <span t-esc ="count"/>
                                 </td>
                                 <td style="border-left: 1px solid black;" class="text-center">
                                     <span t-field ="doc.ticket_id"/>
