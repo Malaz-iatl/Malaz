@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+<!-- Form View -->
+        <record id="view_hd_ticket_form" model="ir.ui.view">
+            <field name="name">hd.ticket.form</field>
+            <field name="model">hd.ticket</field>
+            <field name="arch" type="xml">
+                <form tring="Incentive Structure">
+                     <header>
+                        <button name="button_new" string="Submit" class="oe_highlight" type="object" states="new"/>
+
+                        <button name="button_in_progress" string="Approve" class="oe_highlight" type="object" states="in_progress"/>
+                        <button string="Cancel" name="action_cancel"  type="object" class="oe_highlight"/>
+
+                        <field name="state" widget="statusbar" statusbar_visible="new,in_progress,solved,cancelled" readonly="1"/>
+                     </header>
+                    <sheet>
+                        
+                        <group>
+                            <group>
+                                <field name="sequence"/>
+                            </group>
+                            <group></group>
+                            <group>
+                                <field name="name" attrs="{'readonly': [('state', 'in',('solved','cancelled'))]}" />
+                                <field name="hd_team" attrs="{'readonly': [('state', 'in',('solved','cancelled'))]}"/>
+                                <field name ="customer" attrs="{'readonly': [('state', 'in',('solved','cancelled'))]}"/>
+                                <field name="customer_email" widget="email"/>
+                                <field name="customer_phone" widget="phone"/>
+                               <field name="hosting_type" attrs="{'readonly': [('state', 'in',('solved','cancelled'))]}"/>
+
+                               <field name="server_url" attrs="{'invisible': [('hosting_type', '!=','on-premise')],'required': [('hosting_type', '=','on-premise')],'readonly': [('state', 'in',('solved','cancelled'))]}" widget="url"/>
+                            </group>
+                            <group>
+                                <field name="assigned_to" attrs="{'readonly': [('state', 'in',('solved','cancelled'))]}"/>
+                                <field name="priority_type" widget="radio" attrs="{'readonly': [('state', 'in',('solved','cancelled'))]}"/>
+                                <field name="tage" options="{'color_field': 'color', 'no_create_edit': True}" widget="many2many_tags" attrs="{'readonly': [('state', 'in',('solved','cancelled'))]}"/>
+                            </group>
+                            
+                    </group>
+                    <notebook>
+                             <page name="description" string="Description">
+                                <field name="description" attrs="{'readonly': [('state', 'in',('solved','cancelled'))]}"/>
+                            </page>
+                        </notebook>
+
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="activity_ids" widget="mail_activity"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                </div>
+                </form>
+            </field>
+        </record>
+
+<!--List View Ticket-->
+        <record model="ir.ui.view" id="hd_ticket_list">
+            <field name="name">Hd Ticket list</field>
+            <field name="model">hd.ticket</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="state" />
+                </tree>
+            </field>
+        </record>
+
+<!-- Ticket Action  -->
+    <record id="hd_ticket_action" model="ir.actions.act_window">
+        <field name="name">Ticket</field>
+        <field name="res_model">hd.ticket</field>
+        <field name="view_mode">tree,form,kanban</field>
+    </record>
+
+<!-- Ticket Tages Form -->
+
+    <record model="ir.ui.view" id="ticket_tags_form_view">
+        <field name="name">Tags</field>
+        <field name="model">ticket.tags</field>
+        <field name="arch" type="xml">
+            <form string="Tags">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="color" widget="color_picker"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+<!-- Ticket Tages View -->
+    <record model="ir.ui.view" id="ticket_tags_tree_view">
+        <field name="name">Tags</field>
+        <field name="model">ticket.tags</field>
+        <field name="arch" type="xml">
+            <tree string="Tags" editable="bottom" sample="1">
+                <field name="name"/>
+                <field name="color" widget="color_picker"/>
+            </tree>
+        </field>
+    </record>
+
+<!-- Ticket Tages  Action  -->
+    <record id="ticket_tags_action" model="ir.actions.act_window">
+        <field name="name">Tags</field>
+        <field name="res_model">ticket.tags</field>
+        <field name="help" type="html">
+          <p class="o_view_nocontent_smiling_face">
+            No tags found. Let's create one!
+          </p>
+          <p>
+              Tags are perfect to categorize your Ticket.
+          </p>
+        </field>
+    </record>
+
+
+
+<!-- Res partner Inhert -->
+
+    <record model="ir.ui.view" id="hd_ticket_partner_inherit">
+        <field name="name">Customer</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="get_tickets" type="object"
+                class="oe_stat_button" icon="fa-ticket">
+                    <field name="count_ticket" widget="statinfo" string="Tickets"/>
+                        
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+<!-- Res Users Inhert -->
+
+    <record model="ir.ui.view" id="hd_ticket_partner_inherit">
+        <field name="name">Users</field>
+        <field name="model">res.users</field>
+        <field name="inherit_id" ref="base.view_users_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="get_users_tickets" type="object"
+                class="oe_stat_button" icon="fa-ticket">
+                    <field name="count_ticket" widget="statinfo" string="Tickets"/>
+                        
+                    </button>
+                </xpath>
+            </field>
+        </record>
+
+
+    <!-- menuitem -->
+    <menuitem id="menu_ticket" name="Ticket" parent="menu_main_help_deak" sequence="1"/>
+
+    <menuitem id="menu_all_hd_ticket" name="Ticket" parent="menu_ticket" sequence="1" action="hd_ticket_action"/>
+
+    <menuitem id="menu_ticket_tags_config" name="Tags" parent="menu_help_desk_config" sequence="2" action="ticket_tags_action"/>
+</data>
+</odoo>
+

@@ -1,0 +1,58 @@
+<odoo>
+	<data>
+	<!--Tickets Team. Report wizard -->
+		<record model="ir.ui.view" id="income_report_wizard_view">
+		    <field name="name">Tickets Team Wiz</field>
+		    <field name="model">tickets.team.excel</field>
+		    <field name="arch" type="xml">
+		      	<form>
+		      		<sheet>
+                         <group>
+                              <group>
+                                   <field name="team_id"/>
+                              </group>
+                              <group>
+                                   <field name="state"/>
+                              </group>
+                          </group>
+                      </sheet>
+		      		<footer>
+		      			<button name='print_report' string='Print' type='object' class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+		      		</footer>
+		      	</form>
+		    </field>
+		</record>
+
+		<record model="ir.actions.act_window" id="tickets_team_report_action">
+		    <field name="name">Ticket Report Excel</field>
+		    <field name="res_model">tickets.team.excel</field>
+		    <field name="view_mode">form</field>
+		    <field name="target">new</field>
+		</record>
+
+        <record model="ir.ui.view" id="view_tickets_team_report_wizard">
+            <field name="name">tickets.team.wizard</field>
+            <field name="model">tickets.team.wizard</field>
+            <field name="arch" type="xml">
+                <form string="File to Downloads">
+                    <field name="name" invisible="1"/>
+                    <field name="file_download" filename="name"/>
+                
+                <footer>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+		      	</footer>
+		      	</form>
+            </field>
+        </record>
+
+        
+		<menuitem id="tickets_team_wizard"
+            name="Tickets Per Team Excel"
+            parent="help_desk_team.menu_help_desk_reports"
+            action="tickets_team_report_action"
+            sequence="2"/>
+
+	</data>
+</odoo>

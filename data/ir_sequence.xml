@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="seq_hd_ticket" model="ir.sequence">
+        <field name="name">hd.ticket.seq</field>
+        <field name="code">hd.ticket.seq</field>
+        <field name="padding">5</field>
+        <field eval="1" name="number_increment"/>
+    </record>
+</odoo>

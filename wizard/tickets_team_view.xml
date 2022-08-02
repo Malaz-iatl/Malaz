@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="ticket_team_wizard_form" model="ir.ui.view">
+            <field name="name">ticket.team.wizard.view</field>
+            <field name="model">ticket.team.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Parts Movement Report">
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="team_id" />
+                                <field name="state"/>
+                                
+
+                            </group>
+                        </group>
+                        <footer>
+                            <button name="get_report" string="Print" type="object" class="btn-primary" icon="fa-file-pdf-o"/>
+                            OR
+                            <button string="Cancel" class="btn-danger" special="cancel" icon="fa-close"/>
+                        </footer>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <act_window id="ticket_team_wizard_action"
+                    name="Tickets per Team Report"
+                    res_model="ticket.team.wizard"
+                    view_mode="form"
+                    target="new"
+        />
+
+        <menuitem id="menu_help_desk_reports" name="Reports" parent="menu_main_help_deak" sequence="2"/>
+
+        <menuitem
+                id="ticket_team_menu"
+                name="Tickets per Team Report"
+                parent="menu_help_desk_reports"
+                action="ticket_team_wizard_action"
+                sequence="1"
+        />
+
+    </data>
+</odoo>
