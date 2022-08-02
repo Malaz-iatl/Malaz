@@ -49,14 +49,14 @@ class PartsMovment(models.AbstractModel):
         tickets = self.env['hd.ticket'].search([('hd_team.id','=',team_id)])
         if team_id and not state:
             for rec in tickets:
-                if rec.state == 'in_progress':
-                    state = 'In Progress'
+                name = str(rec.name)
+                seq = str(rec.sequence)
 
                 ticket_list.append((0,0,{
-                    # 'ticket_id': 1,
-                    # 'name': str(rec.name),
-                    # 'priority': rec.priority_type,
-                    'state': state,
+                    'ticket_id': seq,
+                    'name': name,
+                    'priority': rec.priority_type,
+                    'state': rec.state,
                     }))
 
 
@@ -64,7 +64,7 @@ class PartsMovment(models.AbstractModel):
             for rec in tickets.filtered(lambda x:x.state == state):
                 ticket_list.append((0,0,{
                     'ticket_id': rec.sequence,
-                    'name': rec,
+                    'name': rec.name,
                     'priority': rec.priority_type,
                     }))
                 print("::::::::::::::::m",ticket_list)
